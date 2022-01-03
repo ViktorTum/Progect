@@ -1,35 +1,33 @@
 import pygame
+from classHero import Hero
+from class_menu import Menu
+from level import level
 from settings import USER_SCREEN_H, USER_SCREEN_W
 
 
-    def animation(self):
-#        ВСЯ АНИМАЦИЯ ПЕРСОНАЖА
+
+# настраиваем экран
+pygame.init()
+win = pygame.display.set_mode((USER_SCREEN_W, USER_SCREEN_H), pygame.FULLSCREEN)
+pygame.display.set_caption("хз")
+
+bg = pygame.image.load('Tiles/bg/bg.png')
+bg = pygame.transform.scale(bg, (USER_SCREEN_W, USER_SCREEN_H))
+
+# Тамер и фпс
+clock = pygame.time.Clock()
+FPS = 120
+
+# Группы
+all_sprites_group = pygame.sprite.Group()  # Группа вообще всех игровы объектов
+
+hero = Hero(all_sprites_group, USER_SCREEN_H)  # Создаём персонажа по шаблону из класса
 
 
-        #ATAKA
-        if self.attack == True:
-            self.animCount += 1   # Для ускоренной анимации атаки
-            if self.animCount >= len(attackAnimation):    # если я дошёл до последней картинки в списке картинок
-                self.animCount = 0        # то обнуляю счётчик, чтобы начать сначала
-            self.image = attackAnimation[self.animCount]    # Достаю картинку с нужным номером из списка
-
-        #БЕГ
-        elif self.speedX != 0:  # Если скорость по Х не нулевая, значит я иду
-            if self.animCount >= len(runAnimation):  # если я дошёл до последней картинки в списке картинок
-                self.animCount = 0  # то обнуляю счётчик, чтобы начать сначала
-
-            self.image = runAnimation[self.animCount]  # Достаю картинку с нужным номером из списка
-            # if self.speedX > 0:  # Если двигаюсь вправо,
-            #     self.image = pygame.transform.flip(self.image, True, False)  # то отзеркаливаю картинку персонажа
-
-        #СТОИТ
-        elif self.speedX == 0:  # иначе скорость = 0, значит стою на месте
-            if self.animCount >= len(idleAnimation):
-                self.animCount = 0
-            self.image = idleAnimation[self.animCount]
-
-        #Если направление вправо, то зеркалим картинку
-        if self.idleLeft == False:
-           self.image = pygame.transform.flip(self.image, True, False)
-
-        self.animCount += 1  # Счётчик подсчитывает, какую картинку по счёту я должен показать
+def drawWindow():
+    win.blit(bg, (0, 0))  # фон
+    platform_group.draw(win)  # Отрисвываем уровень
+#    enemy_group.draw(win) враги в будущем
+#    bot_group.draw(win) боты в будущем
+    win.blit(hero.image, hero.rect)  # главный герой
+    pygame.display.update()  # обновление экрана
